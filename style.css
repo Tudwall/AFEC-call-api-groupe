@@ -1,0 +1,14 @@
+button {
+  width: 80em;
+  height: 30em;
+
+  margin-left: 10em;
+  background-color: aqua;
+
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
+
+  border: 2px solid black;
+}
