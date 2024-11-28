@@ -1,4 +1,4 @@
-const comment = document.createElement("ul");
+const commentcontainer = document.querySelector("ul");
 
 const com = () => {
   fetch("https://jsonplaceholder.typicode.com/comments")
@@ -12,8 +12,9 @@ const com = () => {
       console.log(data);
 
       for (let i = 0; i < 20; i++) {
-        comment.textContent = data.name;
-        document.body.appendChild(comment);
+        const comment = document.createElement("li");
+        comment.textContent = data[i].name;
+        commentcontainer.appendChild(comment);
       }
     })
     .catch((error) => {
