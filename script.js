@@ -1,13 +1,14 @@
 // https://jsonplaceholder.typicode.com/posts
 const postsContainer = document.querySelector('.posts-container')
-const btn = document.querySelector('button')
+const btnNext = document.querySelector('#btnNext')
+const btnPrevious = document.querySelector('#btnPrevious')
 const pagination_element = document.querySelector("#pagination")
 const getPostData = async () => {
     try {
         const postRes = await fetch('https://jsonplaceholder.typicode.com/posts?limit=10')
         if (postRes.ok) {
             const postData = await postRes.json()
-            console.log(postData);
+            // console.log(postData);
             return postData
         }
     } catch (error) {
@@ -16,17 +17,19 @@ const getPostData = async () => {
     }
 
 }
-
-
-// displayList()
-// setupPagination()
-let firstPage = 1
 let current_page = 1; // staring page
 const rows = 5; // rows_per_page
 
-const displayData = async () => {
+const displayPosts = async () => {
     const postData = await getPostData()
-    const pageData = postData.slice((current_page - 1) * rows, current_page * rows)
+    const startIndx = (current_page - 1) * rows
+    const endIndx = current_page * rows
+    const pageData = postData.slice(startIndx, endIndx)
+    displayPages(pageData, postData, endIndx);
+}
+
+const displayPages = (pageData, postData, endIndx) => {
+
     pageData.forEach((el) => {
         const postContainer = document.createElement('div')
         const postTitle = document.createElement('h3')
@@ -37,16 +40,33 @@ const displayData = async () => {
         postContainer.append(postTitle, postBody)
 
     })
+    if (endIndx > postData.length - 1) {
+        btnNext.disabled = true;
+    } else btnNext.disabled = false;
+    if (current_page === 1) {
+        btnPrevious.disabled = true;
+    } else btnPrevious.disabled = false;
 
 }
 
-displayData();
+displayPosts();
+
 const handleClickNext = () => {
     postsContainer.innerHTML = "";
     current_page += 1;
-    displayData();
+    displayPosts();
+
 }
-btn.addEventListener('click', handleClickNext)
+const handleClickPrevious = () => {
+    if (current_page > 1) {
+        postsContainer.innerHTML = "";
+        current_page -= 1;
+        displayPosts();
+
+    }
+}
+btnNext.addEventListener('click', handleClickNext)
+btnPrevious.addEventListener('click', handleClickPrevious)
 
 
 
